@@ -18,20 +18,21 @@
 # and use --history-defaults-file for permissions to the remote digest storage instance
 #
 #
-PATH=/usr/local/mariamysql/bin:$PATH
+PATH=/usr/bin:$PATH
 socket= defaults_file= rate_limit= mysqlopts=
 interval=30
 digest='/usr/bin/pt-query-digest'
 #set log prefix
-LOG_PREFIX='/usr/local/mariamysql/data/'
+LOG_PREFIX='/data/mysql/mysql3306/data/'
 #set slow log history file
-LOG_HISTORY_FILE='/var/log/slow_query_log_history_3306'
-long_query_time=0.1
+DATE=`date +"%Y%m%d-%H%M%S"`
+LOG_HISTORY_FILE=/data/mysql/mysql3306/data/$DATE-slow.log
+long_query_time=0
 HOSTNAME=`/sbin/ifconfig | grep 'inet addr'  | egrep '172.|192.' | awk '{print $2}' | awk -F ":" '{print $2}'`
 PORT=3306
 HOSTNAME="$HOSTNAME\:$PORT"
 
-history_db_host=
+history_db_host=192.168.214.131
 history_db_port=3306
 history_db_name='slow_query_log'
 history_defaults_file=
@@ -151,7 +152,7 @@ then
 	echo "No slow log to process";
 	exit
 fi
-mv "$LOG" /tmp/tmp_slow_log
+cp  "$LOG" /tmp/tmp_slow_log
 
 if [ ! -z "${history_defaults_file}" ];
 then
@@ -165,4 +166,6 @@ fi
   "/tmp/tmp_slow_log"
 
 #store history slow_log
+echo   $LOG_HISTORY_FILE 
+echo   $DATE 
 cat /tmp/tmp_slow_log >> $LOG_HISTORY_FILE

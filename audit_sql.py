@@ -2,7 +2,7 @@
 '''auto audit sql task
 '''
 import MySQLdb
-db = MySQLdb.connect("192.168.11.28","anemometer","anemometerpass","slow_query_log_192_168_11_17")
+db = MySQLdb.connect("192.168.214.131","root","root","slow_query_log_192_168_214_130")
 
 def run():
 	cursor = db.cursor()
