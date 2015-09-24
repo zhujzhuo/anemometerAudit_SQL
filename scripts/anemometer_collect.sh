@@ -27,7 +27,7 @@ LOG_PREFIX='/data/mysql/mysql3306/data/'
 #set slow log history file
 DATE=`date +"%Y%m%d-%H%M%S"`
 LOG_HISTORY_FILE=/data/mysql/mysql3306/data/$DATE-slow.log
-long_query_time=0
+long_query_time=1
 HOSTNAME=`/sbin/ifconfig | grep 'inet addr'  | egrep '172.|192.' | awk '{print $2}' | awk -F ":" '{print $2}'`
 PORT=3306
 HOSTNAME="$HOSTNAME\:$PORT"
@@ -135,6 +135,7 @@ fi
 
 mysql $mysqlopts -e "SET GLOBAL long_query_time=$long_query_time"
 mysql $mysqlopts -e "SET GLOBAL slow_query_log=1"
+
 if [ $? -ne 0 ];
 then
 	echo "Error: cannot enable slow log. Aborting"
@@ -143,7 +144,6 @@ fi
 echo "Slow log enabled; sleeping for ${interval} seconds"
 sleep "${interval}"
 
-mysql $mysqlopts -e "SET GLOBAL slow_query_log=0"
 echo "Done.  Processing log and saving to ${history_db_host}:${history_db_port}/${history_db_name}"
 
 # process the log
@@ -152,7 +152,8 @@ then
 	echo "No slow log to process";
 	exit
 fi
-cp  "$LOG" /tmp/tmp_slow_log
+mv  "$LOG" /tmp/tmp_slow_log
+mysql $mysqlopts -e "flush logs;"
 
 if [ ! -z "${history_defaults_file}" ];
 then
