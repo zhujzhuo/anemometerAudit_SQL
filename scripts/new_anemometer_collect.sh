@@ -19,8 +19,8 @@
 #
 #
 #set log prefix
-LOG_PREFIX=LOG_PREFIXNAME
-PORT=PORTNAME
+LOG_PREFIX=/data/mysql/
+PORT=3306
 if [ -z  $LOG_PREFIX ];then
   echo 'first arg is mysql server slowlog file  parent path'
   exit

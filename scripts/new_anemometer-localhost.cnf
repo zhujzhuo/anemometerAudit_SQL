@@ -2,4 +2,4 @@
 user=root
 password='4102@dd916'
 host=localhost
-socket=SOCKETFILE/mysql.sock
+socket=/data/mysql//mysql.sock

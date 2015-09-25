@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS  SLOWDATABASE;
+CREATE DATABASE IF NOT EXISTS  slow_query_log_10_0_1_2_3306;
 
-USE SLOWDATABASE;
+USE slow_query_log_10_0_1_2_3306;
 
 CREATE TABLE events_statements (
  `DIGEST` varchar(32) character set binary NOT NULL ,
